@@ -20,15 +20,15 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(PCL REQUIRED)
 find_package(OpenCV)
-find_package(Threads)
-find_package(Ceres REQUIRED)
+#find_package(Threads)
+#find_package(Ceres REQUIRED)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-list(REMOVE_ITEM PCL_LIBRARIES "vtkproj4")
+#list(REMOVE_ITEM PCL_LIBRARIES "vtkproj4")
 
 catkin_package(
  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
@@ -50,25 +50,25 @@ include_directories(
 add_executable(cameraCalib src/cameraCalib.cpp)
 target_link_libraries(cameraCalib ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
-add_executable(pcdTransfer src/pcdTransfer.cpp src/common.h)
-target_link_libraries(pcdTransfer ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+# add_executable(pcdTransfer src/pcdTransfer.cpp src/common.h)
+#target_link_libraries(pcdTransfer ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 
-add_executable(cornerPhoto src/corner_photo.cpp src/common.h)
-target_link_libraries(cornerPhoto ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-
-
-add_executable(getExt1 src/cam_lid_external1.cpp src/common.h)
-target_link_libraries(getExt1 ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${CERES_LIBRARIES})
-
-add_executable(getExt2 src/cam_lid_external2.cpp src/common.h)
-target_link_libraries(getExt2 ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${CERES_LIBRARIES})
+#add_executable(cornerPhoto src/corner_photo.cpp src/common.h)
+#target_link_libraries(cornerPhoto ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 
-add_executable(projectCloud src/projectCloud.cpp src/common.h)
-target_link_libraries(projectCloud ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+#add_executable(getExt1 src/cam_lid_external1.cpp src/common.h)
+#target_link_libraries(getExt1 ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${CERES_LIBRARIES})
 
-add_executable(colorLidar src/color_lidar_display.cpp src/common.h)
-target_link_libraries(colorLidar ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${CERES_LIBRARIES})
+#add_executable(getExt2 src/cam_lid_external2.cpp src/common.h)
+#target_link_libraries(getExt2 ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${CERES_LIBRARIES})
+
+
+#add_executable(projectCloud src/projectCloud.cpp src/common.h)
+#target_link_libraries(projectCloud ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
+#add_executable(colorLidar src/color_lidar_display.cpp src/common.h)
+#target_link_libraries(colorLidar ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${CERES_LIBRARIES})
 
 
 

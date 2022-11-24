@@ -13,21 +13,26 @@
 using namespace cv;
 using namespace std;
 
-string camera_in_path, camera_folder_path, result_path;
+string camera_in_path, camera_folder_path, result_path, output_img_folder_path;
 int row_number, col_number, width, height;
 
 void getParameters() {
     cout << "Get the parameters from the launch file" << endl;
 
     if (!ros::param::get("camera_in_path", camera_in_path)) {
-        cout << "Can not get the value of camera_in_path" << endl;
-        exit(1);
+		cout << "Can not get the value of camera_in_path" << endl;
+		exit(1);
     }
     if (!ros::param::get("camera_folder_path", camera_folder_path)) {
         cout << "Can not get the value of camera_folder_path" << endl;
         exit(1);
     }
-    if (!ros::param::get("result_path", result_path)) {
+	if (!ros::param::get("output_img_folder_path", output_img_folder_path))
+	{
+		cout << "Can not get the value of output_img_folder_path" << endl;
+		exit(1);
+	}
+	if (!ros::param::get("result_path", result_path)) {
         cout << "Can not get the value of result_path" << endl;
         exit(1);
     }
@@ -63,11 +68,13 @@ int main(int argc, char **argv) {
 	vector<Point2f> image_points_buf;         /* 缓存每幅图像上检测到的角点 */
 	vector<vector<Point2f>> image_points_seq; /* 保存检测到的所有角点 */
 	string filename;      // 图片名
+	string out_filename;
 	vector<string> filenames;
 	while (getline(fin, filename) && filename.size() > 1) {
 		++image_count;
-		filename = camera_folder_path + filename;
-		cout << filename << endl;
+		out_filename = output_img_folder_path + filename;
+		filename = camera_folder_path + filename;		
+		cout << "[+] Read" << filename << endl;
 		Mat imageInput = imread(filename);
 		if (imageInput.empty()) {  // use the file name to search the photo
         	break;
@@ -100,11 +107,14 @@ int main(int argc, char **argv) {
 			image_points_seq.push_back(image_points_buf);  // 保存亚像素角点
 
 			/* 在图像上显示角点位置 */
-			drawChessboardCorners(view_gray, board_size, image_points_buf, false); // 用于在图片中标记角点
+			drawChessboardCorners(imageInput, board_size, image_points_buf, true); // 用于在图片中标记角点
 
-			imshow("Camera Calibration", view_gray);       // 显示图片
+			cout << "[+] Write " << out_filename << endl;
+			imshow("Camera Calibration", imageInput); // 显示图片
 
-			waitKey(1000); //暂停1S      
+			imwrite(out_filename, imageInput);
+
+			waitKey(1000); //暂停1S
 		}
 	}
 	// int CornerNum = board_size.width * board_size.height;  // 每张图片上总的角点数
