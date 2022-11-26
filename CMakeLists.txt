@@ -21,7 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(PCL REQUIRED)
 find_package(OpenCV)
 #find_package(Threads)
-#find_package(Ceres REQUIRED)
+find_package(Ceres REQUIRED)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -53,12 +53,12 @@ target_link_libraries(cameraCalib ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 # add_executable(pcdTransfer src/pcdTransfer.cpp src/common.h)
 #target_link_libraries(pcdTransfer ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 
-#add_executable(cornerPhoto src/corner_photo.cpp src/common.h)
-#target_link_libraries(cornerPhoto ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_executable(cornerPhoto src/corner_photo.cpp src/common.h)
+target_link_libraries(cornerPhoto ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 
-#add_executable(getExt1 src/cam_lid_external1.cpp src/common.h)
-#target_link_libraries(getExt1 ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${CERES_LIBRARIES})
+add_executable(getExt1 src/cam_lid_external1.cpp src/common.h)
+target_link_libraries(getExt1 ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${CERES_LIBRARIES})
 
 #add_executable(getExt2 src/cam_lid_external2.cpp src/common.h)
 #target_link_libraries(getExt2 ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${CERES_LIBRARIES})
