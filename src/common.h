@@ -11,7 +11,8 @@
 
 using namespace std;
 
-struct PnPData {
+struct PnPData
+{
     double x, y, z, u, v;
 };
 
@@ -36,22 +37,27 @@ void rotation2angle(Eigen::Matrix4d rot);
 string configPath = "config";
 
 // convert a int to a string
-string int2str(int num) {
+string int2str(int num)
+{
     ostringstream oss;
-    if (oss << num) {
+    if (oss << num)
+    {
         string str(oss.str());
         return str;
     }
-    else {
+    else
+    {
         cout << "[float2str] - Code error" << endl;
         exit(0);
     }
 }
 
-int str2int(string str) {
+int str2int(string str)
+{
     int d;
     stringstream sin(str);
-    if(sin >> d) {
+    if (sin >> d)
+    {
         return d;
     }
     cout << str << endl;
@@ -59,22 +65,27 @@ int str2int(string str) {
     exit(0);
 }
 
-string float2str(float num) {
+string float2str(float num)
+{
     ostringstream oss;
-    if (oss << num) {
+    if (oss << num)
+    {
         string str(oss.str());
         return str;
     }
-    else {
+    else
+    {
         cout << "[float2str] - Code error" << endl;
         exit(0);
     }
 }
 
-float str2float(string str) {
+float str2float(string str)
+{
     float d;
     stringstream sin(str);
-    if(sin >> d) {
+    if (sin >> d)
+    {
         return d;
     }
     cout << str << endl;
@@ -82,22 +93,27 @@ float str2float(string str) {
     exit(0);
 }
 
-string double2str(double num) {
+string double2str(double num)
+{
     ostringstream oss;
-    if (oss << num) {
+    if (oss << num)
+    {
         string str(oss.str());
         return str;
     }
-    else {
+    else
+    {
         cout << "[double2str] - Code error" << endl;
         exit(0);
     }
 }
 
-double str2double(string str) {
+double str2double(string str)
+{
     double d;
     stringstream sin(str);
-    if(sin >> d) {
+    if (sin >> d)
+    {
         return d;
     }
     cout << str << endl;
@@ -105,33 +121,39 @@ double str2double(string str) {
     exit(0);
 }
 
-string long2str(long num) {
+string long2str(long num)
+{
     ostringstream oss;
-    if (oss << num) {
+    if (oss << num)
+    {
         string str(oss.str());
         return str;
     }
-    else {
+    else
+    {
         cout << "[long2str] - Code error" << endl;
         exit(0);
     }
 }
 
-void getIntrinsic(const string path, vector<float> &intrinsic) {
+void getIntrinsic(const string path, vector<float> &intrinsic)
+{
     ifstream inFile;
     inFile.open(path);
-    if (!inFile.is_open()) {
-        cout << "Can not open file " << path << endl; 
+    if (!inFile.is_open())
+    {
+        cout << "Can not open file " << path << endl;
         exit(1);
     }
 
     string lineStr;
     getline(inFile, lineStr);
-    for (uint i = 0; i < 3; ++i) {
+    for (uint i = 0; i < 3; ++i)
+    {
         getline(inFile, lineStr);
         stringstream line(lineStr);
         string str;
-        
+
         line >> str;
         intrinsic.push_back(str2double(str));
         line >> str;
@@ -141,22 +163,25 @@ void getIntrinsic(const string path, vector<float> &intrinsic) {
     }
 }
 
-void getDistortion(const string path, vector<float> &distortion) {
+void getDistortion(const string path, vector<float> &distortion)
+{
     ifstream inFile;
     inFile.open(path);
-    if (!inFile.is_open()) {
-        cout << "Can not open file " << path << endl; 
+    if (!inFile.is_open())
+    {
+        cout << "Can not open file " << path << endl;
         exit(1);
     }
     string lineStr;
-    for (uint i = 0; i < 6; ++i) {
+    for (uint i = 0; i < 6; ++i)
+    {
         getline(inFile, lineStr);
     }
-    
+
     getline(inFile, lineStr);
     stringstream line(lineStr);
     string str;
-        
+
     line >> str;
     distortion.push_back(str2double(str));
     line >> str;
@@ -169,21 +194,24 @@ void getDistortion(const string path, vector<float> &distortion) {
     distortion.push_back(str2double(str));
 }
 
-void getExtrinsic(const string path, vector<float> &extrinsic) {
+void getExtrinsic(const string path, vector<float> &extrinsic)
+{
     ifstream inFile;
     inFile.open(path);
-    if (!inFile.is_open()) {
-        cout << "Can not open file " << path << endl; 
+    if (!inFile.is_open())
+    {
+        cout << "Can not open file " << path << endl;
         exit(1);
     }
 
     string lineStr;
     getline(inFile, lineStr);
-    for (uint i = 0; i < 3; ++i) {
+    for (uint i = 0; i < 3; ++i)
+    {
         getline(inFile, lineStr);
         stringstream line(lineStr);
         string str;
-        
+
         line >> str;
         extrinsic.push_back(str2double(str));
         line >> str;
@@ -195,31 +223,38 @@ void getExtrinsic(const string path, vector<float> &extrinsic) {
     }
 }
 
-void rotation2angle(Eigen::Matrix4d rot) {
-    double sy = sqrt(rot(0,0)*rot(0,0) + rot(1,0)*rot(1,0));
+void rotation2angle(Eigen::Matrix4d rot)
+{
+    double sy = sqrt(rot(0, 0) * rot(0, 0) + rot(1, 0) * rot(1, 0));
     bool singular = sy < 1e-6;
     double x, y, z;
-    if(!singular) {
+    if (!singular)
+    {
         x = atan2(rot(2, 1), rot(2, 2)) * 180 / M_PI;
         y = atan2(-rot(2, 0), sy) * 180 / M_PI;
         z = atan2(rot(1, 0), rot(0, 0)) * 180 / M_PI;
     }
-    else {
+    else
+    {
         x = atan2(-rot(1, 2), rot(1, 1)) * 180 / M_PI;
         y = atan2(-rot(2, 0), sy) * 180 / M_PI;
         z = 0;
     }
-    cout << x << " " << y << " " << z << endl << endl; // roll pitch yaw
+    cout << x << " " << y << " " << z << endl
+         << endl; // roll pitch yaw
 }
 
-void writeExt(const string path, const Eigen::Matrix3d &rot, const Eigen::Vector3d &t) {
+void writeExt(const string path, const Eigen::Matrix3d &rot, const Eigen::Vector3d &t)
+{
     string filename = path;
     ofstream outfile(filename.c_str());
-    if (!outfile) {
+    if (!outfile)
+    {
         cout << "Can not open the file: " << filename << endl;
         exit(0);
     }
-    else {
+    else
+    {
         outfile << "extrinsic" << endl;
         outfile << rot(0, 0) << "  " << rot(0, 1) << "  " << rot(0, 2) << "  " << t[0] << endl;
         outfile << rot(1, 0) << "  " << rot(1, 1) << "  " << rot(1, 2) << "  " << t[1] << endl;
@@ -228,17 +263,36 @@ void writeExt(const string path, const Eigen::Matrix3d &rot, const Eigen::Vector
     }
 }
 
-void getData(const string lidar_path, const string photo_path, vector<PnPData> &pData) {
+void getData(const string lidar_path, const string photo_path, vector<PnPData> &pData)
+{
     ifstream inFile_lidar;
     ifstream inFile_photo;
 
     inFile_lidar.open(lidar_path);
     inFile_photo.open(photo_path);
+
+    if (!inFile_lidar.is_open())
+    {
+        cout << "Can not open file " << lidar_path << endl;
+        exit(1);
+    }
+
+    if (!inFile_photo.is_open())
+    {
+        cout << "Can not open file " << photo_path << endl;
+        exit(1);
+    }
+
     string lineStr_lidar;
     string lineStr_photo;
 
-    while(getline(inFile_lidar, lineStr_lidar) && getline(inFile_photo, lineStr_photo)) {
-        if (lineStr_lidar.size() > 10 && lineStr_photo.size() > 10) {  // ignore the index
+    while (getline(inFile_lidar, lineStr_lidar) && getline(inFile_photo, lineStr_photo))
+    {
+        if (lineStr_lidar.size() > 10 && lineStr_photo.size() > 10)
+        {
+            cout << "lidar data  " << lineStr_lidar << endl;
+            cout << "photo data  " << lineStr_photo << endl;
+
             PnPData pp;
             string str;
             stringstream line_lidar(lineStr_lidar);
@@ -267,10 +321,13 @@ void getData(const string lidar_path, const string photo_path, vector<PnPData> &
             pData.push_back(pp);
             cout << endl;
         }
-        else if(lineStr_lidar.size() < 1 && lineStr_photo.size() < 1) {  // stop reading the data when there is an empty line
+        else if (lineStr_lidar.size() < 1 && lineStr_photo.size() < 1)
+        { // stop reading the data when there is an empty line
+            cout << "[+] break coner data" << endl;
             break;
         }
-        else if ((lineStr_lidar.size() < 10 && lineStr_photo.size() > 10) || (lineStr_lidar.size() > 10 && lineStr_photo.size() < 10)) {
+        else if ((lineStr_lidar.size() < 10 && lineStr_photo.size() > 10) || (lineStr_lidar.size() > 10 && lineStr_photo.size() < 10))
+        {
             cout << lineStr_lidar.size() << " " << lineStr_photo.size();
             cout << "Lidar data and photo data not aligned!" << endl;
             exit(1);
